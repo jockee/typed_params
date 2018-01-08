@@ -1,0 +1,30 @@
+PATH
+  remote: .
+  specs:
+    typed_params (0.1.0)
+      contracts
+      kleisli
+      typed_contracts
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    contracts (0.16.0)
+    kleisli (0.2.7)
+    minitest (5.11.1)
+    rake (10.5.0)
+    typed_contracts (0.1.0)
+      contracts
+      kleisli
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16)
+  minitest (~> 5.0)
+  rake (~> 10.0)
+  typed_params!
+
+BUNDLED WITH
+   1.16.1
