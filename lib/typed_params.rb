@@ -66,7 +66,7 @@ module TypedParams
     def handle_non_hash(param_name, type, data)
       Contract.valid?(data, type)
       if maybe_of_and_not_wrapped?(type)
-        handle_maybe_wrapping(param_name, type, data, presence: type.class == PresentMaybeOf)
+        handle_maybe_wrapping(param_name, type, data, presence: type.class == ToPresenceMaybeOf)
       else
         raise ParamsError.new("Missing required parameter #{param_name}") if data.nil?
         instance_variable_set("@#{param_name}", data)
@@ -75,7 +75,7 @@ module TypedParams
 
     Contract Any => Bool
     def maybe_of_and_not_wrapped?(type)
-      type.class.in?([PresentMaybeOf, MaybeOf]) &&
+      type.class.in?([ToPresenceMaybeOf, ToMaybeOf]) &&
         !type.class.in?([Kleisli::Maybe::Some, Kleisli::Maybe::None])
     end
 
