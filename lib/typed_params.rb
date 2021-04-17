@@ -2,7 +2,7 @@ require "typed_params/version"
 require "typed_contracts"
 require "contracts"
 
-module TypedParams
+module OldTypedParams
   class ParamsError < StandardError; end
 
   def self.included(base)
@@ -18,11 +18,11 @@ module TypedParams
 
   module ClassMethods
     def typed_params(method, scheme)
-      unless self.class_variables.include?(:@@typed_fields)
+      unless class_variables.include?(:@@typed_fields)
         class_variable_set(:@@typed_fields, {})
       end
       controller_class_name = to_s.underscore.to_sym
-      typed_fields = self.class_variable_get(:@@typed_fields)
+      typed_fields = class_variable_get(:@@typed_fields)
       class_variable_set(:@@typed_fields, typed_fields.merge("#{controller_class_name}_#{method}".to_sym => scheme))
     end
   end
@@ -48,16 +48,16 @@ module TypedParams
 
     Contract Hash => Hash
     def to_value_h(hsh = @schema)
-      hsh.each_with_object({}) do |(k, _), acc|
+      hsh.each_with_object({}) { |(k, _), acc|
         data = send(k)
         acc[k] = if data.is_a?(Params)
-                   data.to_value_h
-                 elsif data.class.in?([Kleisli::Maybe::Some, Kleisli::Maybe::None])
-                   data.value
-                 else
-                   data
-                 end
-      end.compact
+          data.to_value_h
+        elsif data.class.in?([Kleisli::Maybe::Some, Kleisli::Maybe::None])
+          data.value
+        else
+          data
+        end
+      }.compact
     end
 
     private
